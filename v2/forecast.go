@@ -77,7 +77,7 @@ type Forecast struct {
 	Flags     Flags
 }
 
-func Get(key string, lat string, long string, time string) *Forecast {
+func Get(key string, lat string, long string, time string, c appengine.Context) *Forecast {
 	coord := lat + "," + long	
 
 	var url string
@@ -87,7 +87,6 @@ func Get(key string, lat string, long string, time string) *Forecast {
 		url = BASEURL + "/" + key + "/" + coord + "," + time + "?units=ca"
 	}
 
-	c := appengine.NewContext(r)
     	client := urlfetch.Client(c)
 	resp, err := client.Get(url)
 
