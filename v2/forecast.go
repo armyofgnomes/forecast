@@ -1,11 +1,9 @@
 package forecast
 
 import (
-	"crypto/tls"
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"net/http"
         "appengine"
    	"appengine/urlfetch"
 )
