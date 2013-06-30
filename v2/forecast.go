@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+        "appengine"
+   	"appengine/urlfetch"
 )
 
 // URL example:  "https://api.forecast.io/forecast/APIKEY/LATITUDE,LONGITUDE,TIME?units=ca"
@@ -78,7 +80,7 @@ type Forecast struct {
 }
 
 func Get(key string, lat string, long string, time string) *Forecast {
-	coord := lat + "," + long
+	coord := lat + "," + long	
 
 	var url string
 	if time == "now" {
@@ -87,10 +89,8 @@ func Get(key string, lat string, long string, time string) *Forecast {
 		url = BASEURL + "/" + key + "/" + coord + "," + time + "?units=ca"
 	}
 
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // susceptible to man-in-the-middle
-	}
-	client := &http.Client{Transport: tr}
+	c := appengine.NewContext(r)
+    	client := urlfetch.Client(c)
 	resp, err := client.Get(url)
 
 	if err != nil {
